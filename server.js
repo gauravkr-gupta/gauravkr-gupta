@@ -8,6 +8,8 @@ var app = express();
 
 app.use(cors());
 
+require('./routes')(app);
+
 var port = config.server.port;
 
 app.listen(port);
