@@ -2,11 +2,23 @@
 
 var express = require('express'),
     config = require('./config'),
+    bodyParser = require('body-parser'),
     cors = require('cors');
+
+require('./db');
 
 var app = express();
 
 app.use(cors());
+
+// parse application/json
+app.use(bodyParser.json())
+
+var normalizedPath = require("path").join(__dirname, "./model");
+
+require("fs").readdirSync(normalizedPath).forEach(function(file) {
+  require("./model/" + file);
+});
 
 require('./routes')(app);
 
