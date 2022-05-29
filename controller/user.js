@@ -8,6 +8,10 @@ var mongoose   = require('mongoose'),
 
 const privateKey = config.key.privateKey;
 
+/**
+   POST: /user/create
+ */
+
 exports.create = function (req,res) {
     if(req.body.userId && req.body.email && req.body.phoneNumber && req.body.password){
         async.waterfall([
@@ -53,5 +57,52 @@ exports.create = function (req,res) {
     } else{
         return res.json({status: false, message: "Invalid Request!!"});
     }
-     
 };
+
+/**
+   POST: /user/login
+ */
+
+   exports.login = function (req,res) {
+    if(req.body.phoneNumber && req.body.password){
+        async.waterfall([
+            function(callback) {
+              user.getOne({phoneNumber: req.body.phoneNumber}, function(err, result){
+                if(err){
+                  callback({status: false, message: "Oops something went wrong!!"});
+                } else{
+                  if(result){
+                    callback(null, result)
+                  } else{
+                    callback({status: false, message: "Invalid username or password"});
+                  }
+                }
+              });
+            },
+            function(user, callback) {
+              let pass = encryption.decrypt(user.password);
+              if(req.body.password == pass){
+                var response = {
+                                userId: user.userId,
+                                name: user.name,
+                                email: user.email,
+                                phoneNumber: user.phoneNumber,
+                                role: user.role
+                              };
+                response.token = jwt.sign(response, privateKey);
+                callback(null, response);
+              } else{
+                callback({status: false, message: "Invalid username or password"});
+              }
+            }
+        ], function (err, result) {
+            if(err){
+              return res.json(err);
+            } else{
+              return res.json({status: true, result: result});
+            }
+        });
+    } else{
+        return res.json({status: false, message: "Invalid Request!!"});
+    }
+  };

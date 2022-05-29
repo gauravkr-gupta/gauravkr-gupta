@@ -37,4 +37,18 @@ Body:
 }
 ```
 
+Login
+
+```bash
+POST: http://localhost:8080/user/login
+
+Content-Type: application/json
+
+Body:
+{
+	"phoneNumber": 9999999999,
+	"password": "password@123"
+}
+```
+
 
