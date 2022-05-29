@@ -36,9 +36,9 @@ todoSchema.statics.createTodo = function(requestData, callback) {
     this.create(requestData, callback);
 };
 
-todoSchema.statics.updateTodo = function(id, todotext, callback) {
+todoSchema.statics.updateTodo = function(id, userId, todotext, callback) {
     updateData.updatedAt = (new Date()).getTime();
-    this.update({_id: mongoose.Types.ObjectId(id)}, {$set: {todotext: todotext}}, callback);
+    this.update({_id: mongoose.Types.ObjectId(id), userId: userId}, {$set: {todotext: todotext}}, callback);
 };
 todoSchema.statics.deleteTodo = function(id, callback) {
     this.remove({_id: mongoose.Types.ObjectId(id)}, callback);

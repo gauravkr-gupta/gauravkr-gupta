@@ -51,4 +51,45 @@ Body:
 }
 ```
 
+Create Todo
+
+```bash
+POST: http://localhost:8080/todo/create
+
+Header:
+Authorization: token(received in response to login request)
+Content-Type: application/json
+
+Body:
+{
+	"todotext": "Here goes text for todo",
+}
+```
+
+Update Todo
+
+```bash
+POST: http://localhost:8080/todo/update
+
+Header:
+Authorization: token(received in response to login request)
+Content-Type: application/json
+
+Body:
+{
+    "id": "id of todo to be edited"
+	"todotext": "Here goes text for todo",
+}
+```
+
+List Todo of a user
+
+```bash
+GET: http://localhost:8080/todo/list
+
+Header:
+Authorization: token(received in response to login request)
+
+```
+
 
